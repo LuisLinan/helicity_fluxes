@@ -149,7 +149,7 @@ def dave4vm(mag, window_size, threshold=1.0):
 
     AM = dave4vm_matrix(mag['BX'], mag['BXX'], mag['BY'], mag['BYY'], mag['BZ'], mag['BZX'], mag['BZY'], mag['BZT'],
                         psf,
-                        psfx, psfy, psfxx, psfyy, psfxy, doublee)
+                        psfx, psfy, psfxx, psfyy, psfxy)
 
     kernel = {'psf': psf.copy(), 'psfx': psfx.copy(), 'psfy': psfy.copy(), 'psfxx': psfxx.copy(), 'psfyy': psfyy.copy(),
               'psfxy': psfxy.copy()}

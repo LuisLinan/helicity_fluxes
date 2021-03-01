@@ -14,7 +14,7 @@ def corr_convol(image, kernel, size):
     return convol.reshape(1, size[0], size[1])
 
 
-def dave4vm_matrix(Bx, Bxx, By, Byy, Bz, Bzx, Bzy, Bzt, psf, psfx, psfy, psfxx, psfyy, psfxy, doublee):
+def dave4vm_matrix(Bx, Bxx, By, Byy, Bz, Bzx, Bzy, Bzt, psf, psfx, psfy, psfxx, psfyy, psfxy):
     """Construct  matrix elements for LKA algoritm
 
     Remarks
@@ -25,13 +25,9 @@ def dave4vm_matrix(Bx, Bxx, By, Byy, Bz, Bzx, Bzy, Bzt, psf, psfx, psfy, psfxx, 
 
     """
 
-    if doublee == 1:
-        ddtype = 'float64'
-    else:
-        ddtype = 'float32'
 
     sz = Bz.shape
-    A = np.zeros((10, 10, sz[0], sz[1]), dtype=ddtype)
+    A = np.zeros((10, 10, sz[0], sz[1]))
 
     G = corr_convol(Bz * Bz, psf, sz)
 
