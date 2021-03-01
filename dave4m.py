@@ -3,7 +3,7 @@ from scipy import optimize
 from davematrix import dave4vm_matrix
 
 
-def dave4vm(mag, window_size, doublee=1, floatt=1, threshold=1.0, missing_value=np.nan):
+def dave4vm(mag, window_size, threshold=1.0):
     """ DAVE4VM - Differential Affine Velocity Estimator for Vector Magnetograms
 
     Parameters
@@ -114,40 +114,10 @@ def dave4vm(mag, window_size, doublee=1, floatt=1, threshold=1.0, missing_value=
 
     """
 
-    if doublee != 1:
-        doublee = 0
-
-    if floatt != 1:
-        floatt = 0
-
-    if floatt == doublee:
-        if floatt == 0:
-            if mag['BZ'].dtype == 'float32':
-                floatt = 1
-            else:
-                floatt = 0
-            if mag['BZ'].dtype == 'float64':
-                doublee = 1
-            else:
-                doublee = 0
-
-    if missing_value != np.nan:
-        if doublee == 1:
-            missing_value = np.float64("nan")
-        else:
-            missing_value = np.float32("nan")
-
-    if doublee == 1:
-        ddtype = 'float64'
-    else:
-        ddtype = 'float32'
 
     sz = mag['BZ'].shape
 
-    vel = missing_value
-    dum = np.empty((sz[0], sz[1]))
-
-    dum[:] = vel
+    dum = np.full((sz[0], sz[1]), np.nan)
 
     v = {'U0': dum.copy(), 'UX': dum.copy(), 'UY': dum.copy(), 'V0': dum.copy(), 'VX': dum.copy(), 'VY': dum.copy(),
          'W0': dum.copy(), 'WX': dum.copy(), 'WY': dum.copy()}
@@ -161,7 +131,7 @@ def dave4vm(mag, window_size, doublee=1, floatt=1, threshold=1.0, missing_value=
     y = np.transpose(
         np.array(np.arange(int(nw[1])) - int(nw[1] / 2)).repeat(int(nw[0])).reshape(int(nw[1]), int(nw[0]))) * mag['DY']
 
-    psf = np.zeros((int(nw[0]), int(nw[1])), dtype=ddtype)
+    psf = np.zeros((int(nw[0]), int(nw[1])))
 
     psf[:] = 1.0
 
